@@ -61,7 +61,7 @@ namespace Garage
 
         public void ListOfVehicleTypes()
         {
-            var vehicleTypes = this.Where(x => x != null).GroupBy(x => x.GetType());
+            var vehicleTypes = this.GroupBy(x => x.GetType());
 
             foreach (var group in vehicleTypes)
             {
@@ -86,7 +86,7 @@ namespace Garage
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _vehicles.GetEnumerator();
+            return _vehicles.Where(x => x != null).GetEnumerator();
         }
     }
 }
