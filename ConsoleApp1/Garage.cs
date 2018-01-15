@@ -9,21 +9,21 @@ namespace Garage
 {
     class Garage<T> : IEnumerable<T> where T : Vehicle
     {
-        private T[] vehicles;
+        private T[] _vehicles;
         public int Capacity { get; }
         
         public Garage(int capacity) {
             Capacity = capacity;
-            vehicles = new T[capacity];
+            _vehicles = new T[capacity];
         }
 
         public bool AddVehicle(T vehicle)
         {
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < _vehicles.Length; i++)
             {
-                if (vehicles[i] == null)
+                if (_vehicles[i] == null)
                 {
-                    vehicles[i] = vehicle;
+                    _vehicles[i] = vehicle;
                     return true;
                 }
             }
@@ -32,11 +32,11 @@ namespace Garage
 
         public bool RemoveVehicle(T vehicle)
         {
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < _vehicles.Length; i++)
             {
-                if (vehicles[i] == vehicle)
+                if (_vehicles[i] == vehicle)
                 {
-                    vehicles[i] = null;
+                    _vehicles[i] = null;
                     return true;
                 }
             }
@@ -50,38 +50,43 @@ namespace Garage
 
             foreach (var vehicle in this)
             {
-                Console.WriteLine(vehicle);
-                count++;
+                if (vehicle != null)
+                {
+                    Console.WriteLine(vehicle);
+                    count++;
+                }
             }
             Console.WriteLine("The number of parked vehicles are " + count);
         }
 
         public void ListOfVehicleTypes()
         {
-            foreach(var vehicle in this)
+            var vehicleTypes = this.Where(x => x != null).GroupBy(x => x.GetType());
+
+            foreach (var group in vehicleTypes)
             {
-
-                //if (Car.(this, vehicle))
-                //{
-
-                //}
+                Console.WriteLine($"{group.Key.Name} ({group.Count()})");
+                foreach (var vehicle in group)
+                {
+                    Console.WriteLine(vehicle);
+                }
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < vehicles.Length; i++)
+            for (int i = 0; i < _vehicles.Length; i++)
             {
-                if (vehicles[i] != null)
+                if (_vehicles[i] != null)
                 {
-                    yield return vehicles[i]; //yield is MoveNext 
+                    yield return _vehicles[i]; //yield is MoveNext 
                 }
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)vehicles).GetEnumerator();
+            return _vehicles.GetEnumerator();
         }
     }
 }
