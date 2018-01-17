@@ -42,37 +42,7 @@ namespace Garage
             }
             return false;
         }
-
-        public void ListOfVehicles()
-        {
-            int count = 0;
-            Console.WriteLine("The list of vehicles is:");
-
-            foreach (var vehicle in this)
-            {
-                if (vehicle != null)
-                {
-                    Console.WriteLine(vehicle);
-                    count++;
-                }
-            }
-            Console.WriteLine("The number of parked vehicles are " + count);
-        }
-
-        public void ListOfVehicleTypes()
-        {
-            var vehicleTypes = this.GroupBy(x => x.GetType());
-
-            foreach (var group in vehicleTypes)
-            {
-                Console.WriteLine($"{group.Key.Name} ({group.Count()})");
-                foreach (var vehicle in group)
-                {
-                    Console.WriteLine(vehicle);
-                }
-            }
-        }
-
+        
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < _vehicles.Length; i++)

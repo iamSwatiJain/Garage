@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Garage.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Garage
     class Airplane : Vehicle
     {
         public Int32 NumOfEngines { get; set; }
-        public String FuelType { get; set; }
+        public FuelType FuelType { get; set; }
         public Int32 NumOfSeats { get; set; }
         public Double Length { get; set; }
 
