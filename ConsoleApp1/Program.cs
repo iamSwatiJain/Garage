@@ -1,5 +1,7 @@
 ﻿using Garage.Enums;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Garage
 {
@@ -15,6 +17,8 @@ namespace Garage
 
             Console.WriteLine("Create a garage");
             var garageHandler = new GarageHandler();
+
+            var vehicleFactory = new VehicleFactory();
             bool state = true;
             Console.WriteLine("You're in the main menu.\n");
 
@@ -26,39 +30,103 @@ namespace Garage
                 Console.WriteLine("Enter 4 to list the vehicles type-wise");
                 Console.WriteLine("Enter 5 to search a vehicle on registration number");
                 Console.WriteLine("Enter 6 to search a vehicle on its property");
-                Console.WriteLine("Enter 0 to exit the program");
-                int menu;
+                Console.WriteLine("\r\nEnter 0 to exit the program");
                 bool result = false;
-                do
-                {
-                    if (!int.TryParse(Console.ReadLine(), out menu))
-                    {
-                        Console.WriteLine("Your input is not an integer. Please enter digits only between 0-6. Try again!\n");
-                    }
-                    else
-                    {
-                        break;
-                    }
-                } while (true);
-                
-                switch (menu)
+
+                switch (Helpers.GetMenuChoice(6))
                 {
                     case 0:
                         state = false;
                         break;
                     case 1:
-                        result=garageHandler.AddVehicle(new Car { Color = Color.Black, RegistrationNum = "Car 001", NumOfWheels = 3, Length = 2, CylinderVolume = 1.6, FuelType = FuelType.Water, NumOfEngines = 1, NumOfSeats = 1 });
-                        if(result == true)
+                        {
+                            Console.WriteLine("Choose which type of vehicle do you want to add?");
+                            var vehicle = vehicleFactory.NewVehicle();
+
+                            if (vehicle == null) break;
+
+                            result = garageHandler.AddVehicle(vehicle);
                             Console.WriteLine("Your vehicle is added to the garage.\n");
-                        else
-                            Console.WriteLine("Unable to add your vehicle. Please try again.\n");
-                        break;
+                            break;
+                        }
                     case 2:
-                        //garageHandler.RemoveVehicle();
-                        break;
+                        {
+                            Console.Write("Enter the registration number of the vehicle you want to remove: ");
+                            var regNum = Console.ReadLine();
+                            garageHandler.RemoveVehicle(regNum);
+                            break;
+                        }
                     case 3:
-                        
-                        break;
+                        {
+                            int count = 0;
+                            Console.WriteLine("The list of vehicles is:");
+
+                            foreach (var vehicle in garageHandler.ListOfVehicles())
+                            {
+                                if (vehicle != null)
+                                {
+                                    Console.WriteLine(vehicle);
+                                    count++;
+                                }
+                            }
+                            Console.WriteLine("The number of parked vehicles are " + count);
+                            break;
+                        }
+                    case 4:
+                        {
+                            foreach (var group in garageHandler.ListOfVehicleTypes())
+                            {
+                                Console.WriteLine($"{group.Key.Name} ({group.Count()})");
+                                foreach (var vehicle in group)
+                                {
+                                    Console.WriteLine(vehicle);
+                                }
+                            }
+                            break;
+                        }
+                    case 5:
+                        {
+                            Console.Write("Enter the registration number of the vehicle you want to find: ");
+                            var regNum = Console.ReadLine();
+                            var vehicle = garageHandler.FindVehicle(regNum);
+
+                            Console.WriteLine($"Found: {vehicle}");
+
+                            break;
+                        }
+                    case 6:
+                        {
+                            Console.Write("Choose a property to filter on [1 - Color, 2 - Number of wheels]: ");
+                            int menu = Helpers.GetInt();
+
+                            IEnumerable<Vehicle> vehicles = new List<Vehicle>();
+                            switch (menu)
+                            {
+                                case 1:
+                                    {
+                                        Console.Write("Color [0 - Black, 1 - White, 2 - Red, 3 - Blue]: ");
+                                        var color = (Color)Helpers.GetInt();
+                                        vehicles = garageHandler.FindVehicle(v => v.Color == color);
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        Console.Write("NumOfWheels: ");
+                                        var wheels = Helpers.GetInt();
+                                        vehicles = garageHandler.FindVehicle(v => v.NumOfWheels == wheels);
+                                        break;
+                                    }
+                                default:
+                                    break;
+                            }
+
+                            foreach (var vehicle in vehicles)
+                            {
+                                Console.WriteLine(vehicle);
+                            }
+
+                            break;
+                        }
                     default:
                         Console.WriteLine("Please enter digits between 0-6 only. Try again!\n");
                         break;

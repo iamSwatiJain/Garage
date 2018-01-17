@@ -2,6 +2,6 @@
 {
     public enum FuelType
     {
-        Petrol, Desil, Electricity, Hydrogen, Water, Gasoline
+        Petrol, Desiel, Electric, Hydrogen, Water, Gasoline
     }
 }

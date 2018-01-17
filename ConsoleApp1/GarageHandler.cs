@@ -34,72 +34,33 @@ namespace Garage
 
         public bool AddVehicle(Vehicle veh)
         {
-            if (garage.AddVehicle(veh))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return garage.AddVehicle(veh);
         }
 
-        public bool RemoveVehicle(Vehicle veh)
+        public bool RemoveVehicle(String registrationNum)
         {
-            if (garage.RemoveVehicle(veh))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var veh = FindVehicle(registrationNum);
+            return garage.RemoveVehicle(veh);
         }
 
-        //public void ListOfVehicles()
-        //{
-        //    return  garage.ToList();
-            
+        public IList<Vehicle> ListOfVehicles()
+        {
+            return garage.ToList();
+        }
 
-        //    int count = 0;
-        //    Console.WriteLine("The list of vehicles is:");
+        public IEnumerable<IGrouping<Type, Vehicle>> ListOfVehicleTypes()
+        {
+            return garage.GroupBy(x => x.GetType());
+        }
 
-        //    foreach (var vehicle in vehicleList)
-        //    {
-        //        if (vehicle != null)
-        //        {
-        //            Console.WriteLine(vehicle);
-        //            count++;
-        //        }
-        //    }
-        //    Console.WriteLine("The number of parked vehicles are " + count);
-        //}
+        public Vehicle FindVehicle(String registrationNum)
+        {
+            return garage.FirstOrDefault(x => x.RegistrationNum == registrationNum);
+        }
 
-        //public void ListOfVehicleTypes()
-        //{
-        //    var vehicleTypes = garage.GroupBy(x => x.GetType()).Select(f=> new { };
-
-
-
-        //    foreach (var group in vehicleTypes)
-        //    {
-        //        Console.WriteLine($"{group.Key.Name} ({group.Count()})");
-        //        foreach (var vehicle in group)
-        //        {
-        //            Console.WriteLine(vehicle);
-        //        }
-        //    }
-        //}
-
-        //public T FindVehicle(String registrationNum)
-        //{
-        //    foreach (var vehicle in this)
-        //    {
-        //        if (vehicle.RegistrationNum == registrationNum)
-        //            return vehicle;
-        //        else
-        //            return vehicle;
-        //    }
-        //}
+        internal IEnumerable<Vehicle> FindVehicle(Func<Vehicle, Boolean> p)
+        {
+            return garage.Where(p);
+        }
     }
 }

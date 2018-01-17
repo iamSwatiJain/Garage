@@ -8,6 +8,15 @@ namespace Garage.Enums
 {
     public enum Color
     {
-        Black, White, Red, Blue, Green, Yellow, Orange, Brown, Gold, Silver
+        Black = 0,
+        White,
+        Red,
+        Blue,
+        Green,
+        Yellow,
+        Orange,
+        Brown,
+        Gold,
+        Silver
     }
 }
