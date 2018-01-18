@@ -48,8 +48,10 @@ namespace Garage
 
             do
             {
-                if (!Double.TryParse(Console.ReadLine(), out value))
+
+                if (!double.TryParse(Console.ReadLine(), out value))
                 {
+                    Console.WriteLine("the value is " + value);
                     Console.WriteLine($"Your input is not double.Try again!");
                 }
                 else

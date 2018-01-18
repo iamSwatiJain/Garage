@@ -16,7 +16,7 @@ namespace Garage
             Console.WriteLine("3: Car");
             Console.WriteLine("4: Bus");
             Console.WriteLine("5: Boat");
-            Console.WriteLine("\r\n0: Back to main Menu");
+            Console.WriteLine("0: Back to main Menu");
 
             switch (Helpers.GetMenuChoice(5))
             {

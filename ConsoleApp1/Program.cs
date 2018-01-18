@@ -30,7 +30,7 @@ namespace Garage
                 Console.WriteLine("Enter 4 to list the vehicles type-wise");
                 Console.WriteLine("Enter 5 to search a vehicle on registration number");
                 Console.WriteLine("Enter 6 to search a vehicle on its property");
-                Console.WriteLine("\r\nEnter 0 to exit the program");
+                Console.WriteLine("Enter 0 to exit the program");
                 bool result = false;
 
                 switch (Helpers.GetMenuChoice(6))
@@ -46,14 +46,21 @@ namespace Garage
                             if (vehicle == null) break;
 
                             result = garageHandler.AddVehicle(vehicle);
-                            Console.WriteLine("Your vehicle is added to the garage.\n");
+                            if (result)
+                                Console.WriteLine("Your vehicle is added to the garage.\n");
+                            else
+                                Console.WriteLine("Unable to add your vehicle to garage. Please try again!\n");
                             break;
                         }
                     case 2:
                         {
                             Console.Write("Enter the registration number of the vehicle you want to remove: ");
                             var regNum = Console.ReadLine();
-                            garageHandler.RemoveVehicle(regNum);
+                            result = garageHandler.RemoveVehicle(regNum);
+                            if (result)
+                                Console.WriteLine("Your vehicle is removed from the garage.\n");
+                            else
+                                Console.WriteLine("Unable to remove your vehicle from garage. Please try again!\n");
                             break;
                         }
                     case 3:
